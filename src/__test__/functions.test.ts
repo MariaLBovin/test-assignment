@@ -13,9 +13,9 @@ beforeEach (()  => {
 describe('should test all parts of function AddTodo', () => {
     test('should add new todo', () => {
         //arrange
-        let listText ="Att göra"
-        let list= [new Todo("handla", true)]
-        let listLength = list.length
+        const listText ="Att göra"
+        const list= [new Todo("", true)]
+        const listLength = list.length
         
         //act
         functions.addTodo(listText, list);
@@ -25,9 +25,10 @@ describe('should test all parts of function AddTodo', () => {
     })
 
     test('should not add new todo', () =>{
-        let listText ="A"
-        let list= [new Todo("handla", true)]
-        let listLength = list.length
+        //arrange
+        const listText ="A"
+        const list= [new Todo("", true)]
+        const listLength = list.length
         
         //act
         functions.addTodo(listText, list);
@@ -36,12 +37,26 @@ describe('should test all parts of function AddTodo', () => {
         expect(list.length).toBe(listLength)
     })
 })
+test ('should change status on todo', () => {
+    //arrange
+    const todoItem :Todo = new Todo("", true)
+
+    //act
+    functions.changeTodo(todoItem)
+
+    //assert
+    expect(todoItem.done).toBe(false)
+}) 
 
 test('should remove all todos', () => {
-    let todoList :Todo [] = [new Todo("handla", true)]
+    //arrange
+    const todoList :Todo [] = [new Todo("handla", true)]
 
+    //act
     functions.removeAllTodos(todoList)
 
+
+    //assert
     expect(todoList.length).toBe(0)
 })
 

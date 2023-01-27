@@ -20,10 +20,10 @@ describe('test createNewToDo-functions', () => {
     test('should test if addTodo has been called', () =>{
         //arrange
         document.body.innerHTML = `<ul id="todos" class="todo"></ul>`
-        let listText ="Att göra"
-        let list= [new Todo("handla", true)]
-        let listResult: IAddResponse = functions.addTodo(listText, list);
-        let spyOnAddToDo = jest.spyOn(functions, "addTodo").mockReturnValue(listResult);
+        const listText ="Att göra"
+        const list= [new Todo("handla", true)]
+        const listResult: IAddResponse = functions.addTodo(listText, list);
+        const spyOnAddToDo = jest.spyOn(functions, "addTodo").mockReturnValue(listResult);
 
         //act
         main.createNewTodo(listText, list)
@@ -36,9 +36,9 @@ describe('test createNewToDo-functions', () => {
     test('should test if displayError has been called', () =>{
         //arrange
         document.body.innerHTML = `<div id="error" class="error"></div>`
-        let spyOnDisplayError = jest.spyOn(main, "displayError").mockReturnValue();
-        let listText ="H"
-        let list= [new Todo("H", false)]
+        const spyOnDisplayError = jest.spyOn(main, "displayError").mockReturnValue();
+        const listText ="H"
+        const list= [new Todo("H", false)]
 
         //act
         main.createNewTodo(listText, list);
@@ -51,9 +51,9 @@ describe('test createNewToDo-functions', () => {
     test('should test if createHTML has been called', () => {
         //arrange
         document.body.innerHTML = `<ul id="todos" class="todo"></ul>`
-        let spyOnCreateHtml = jest.spyOn(main, "createHtml").mockReturnValue();
-        let listText ="Att göra"
-        let list= [new Todo("handla", true)]
+        const spyOnCreateHtml = jest.spyOn(main, "createHtml").mockReturnValue();
+        const listText ="Att göra"
+        const list= [new Todo("handla", true)]
    
         //act
         main.createNewTodo(listText, list)
@@ -67,7 +67,51 @@ describe('test createNewToDo-functions', () => {
 /******************************************************************************
  *                               Testar createHTML                        *
 *******************************************************************************/
+describe('should test all parts of createHTML function', () => {
 
+    test('should print todo-list to html', () => {
+        //arrange
+        document.body.innerHTML = `<ul id="todos" class="todo"></ul>`
+        const todoList :Todo [] = [new Todo("handla", false)]
+        const todoListPlacement = `<li class="todo__text">handla</li>`
+
+        //act
+        main.createHtml(todoList)
+
+        //assert
+        const todoListResult = document.querySelector("#todos")?.innerHTML
+        expect(todoListResult).toEqual(todoListPlacement)
+
+    })
+
+    test("should add class if done", () => {
+        document.body.innerHTML = `<ul id="todos" class="todo"></ul>`
+        const todoList :Todo [] = [new Todo("handla", true)]
+        const todoListPlacement = `<li class="todo__text">handla</li>`
+
+        //act
+        main.createHtml(todoList)
+         
+        //assert
+        const todoListResult = document.querySelector("#todos")?.firstElementChild
+        expect(todoListResult?.classList.contains("todo__text--done")).toBe(true)
+    })
+
+    test('should test if toggleTodo is called', () => {
+        //arrange
+        document.body.innerHTML = 
+        `<ul id="todos" class="todo">
+            <li class="todo"></li>
+        </ul>`
+        const spyOnToggleTodo = jest.spyOn(main, "toggleTodo")
+        main.createHtml([new Todo("handla", true)])
+        
+        //act
+        document.querySelector("li")?.click();
+        //assert
+        expect(spyOnToggleTodo).toHaveBeenCalled();
+    })
+})
 /******************************************************************************
  *                               Testar toggleToDos                         *
 *******************************************************************************/
@@ -79,7 +123,7 @@ describe('test toggleToDo-functions', () => {
         let spyOnChangeToDo = jest.spyOn(functions, "changeTodo").mockReturnValue();
 
         //act
-        main.toggleTodo({text: 'todo3', done: false});
+        main.toggleTodo({text: "handla", done: false});
 
         //assert
         expect(spyOnChangeToDo).toHaveBeenCalled();
@@ -89,7 +133,7 @@ describe('test toggleToDo-functions', () => {
 
     test('should call createHTML', () => {
         //arrange
-        let Todo = {text: 'todo3', done: false}
+        let Todo = {text: "handla", done: false}
         let spyOnCreateHTML = jest.spyOn(main, "createHtml").mockReturnValue();
 
         //act
