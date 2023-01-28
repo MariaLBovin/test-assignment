@@ -48,6 +48,17 @@ test ('should change status on todo', () => {
     expect(todoItem.done).toBe(false)
 }) 
 
+test('should test order of array-list', () => {
+    const arrayOfTodos :Todo [] = 
+    [new Todo("sova",true),
+    new Todo("äta", true),
+    new Todo("vila", false)] 
+
+    functions.sortByFirstLetter(arrayOfTodos)
+
+    expect(arrayOfTodos[1].text).toBe("vila");
+})
+
 test('should remove all todos', () => {
     //arrange
     const todoList :Todo [] = [new Todo("handla", true)]

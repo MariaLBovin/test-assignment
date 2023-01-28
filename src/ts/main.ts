@@ -1,4 +1,4 @@
-import { addTodo, changeTodo, removeAllTodos } from "./functions";
+import { addTodo, changeTodo, removeAllTodos, sortByFirstLetter } from "./functions";
 import { Todo } from "./models/Todo";
 
 let todos: Todo[] = JSON.parse(localStorage.getItem("todos") || "[]");
@@ -15,9 +15,8 @@ document.getElementById("clearTodos")?.addEventListener("click", () => {
     let todoText: string = (
       document.getElementById("newTodoText") as HTMLInputElement
     ).value;
-    console.log("Todos when creating", todos);
-
     createNewTodo(todoText, todos);
+    
   }
 );
 
@@ -26,6 +25,8 @@ export function createNewTodo(todoText: string, todos: Todo[]) {
 
   if (result.success) {
     exports.createHtml(todos);
+    
+    
   } else {
     exports.displayError(result.error, true);
   }
@@ -39,7 +40,8 @@ export function createHtml(todos: Todo[]) {
   ) as HTMLUListElement;
 
   todosContainer.innerHTML = "";
-
+  sortByFirstLetter(todos)
+  
   for (let i = 0; i < todos.length; i++) {
     let li: HTMLLIElement = document.createElement("li");
 
@@ -54,7 +56,9 @@ export function createHtml(todos: Todo[]) {
     });
 
     todosContainer.appendChild(li);
+
   }
+
 }
 
 export function toggleTodo(todo: Todo) {

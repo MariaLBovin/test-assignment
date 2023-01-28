@@ -1,5 +1,7 @@
+import { createHtml, createNewTodo } from "./main";
 import { IAddResponse } from "./models/IAddResult";
 import { Todo } from "./models/Todo";
+
 
 export function addTodo(todoText: string, todos: Todo[]): IAddResponse {
   if (todoText.length > 2) {
@@ -18,3 +20,8 @@ export function changeTodo(todo: Todo) {
 export function removeAllTodos(todos: Todo[]) {
   todos.splice(0, todos.length);
 }
+
+export function sortByFirstLetter (todos: Todo[]) {
+todos.sort ((a, b) => (a.text > b.text) ? 1 : -1);
+}
+

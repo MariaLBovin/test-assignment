@@ -37,8 +37,8 @@ describe('test createNewToDo-functions', () => {
         //arrange
         document.body.innerHTML = `<div id="error" class="error"></div>`
         const spyOnDisplayError = jest.spyOn(main, "displayError").mockReturnValue();
-        const listText ="H"
-        const list= [new Todo("H", false)]
+        const listText ="A"
+        const list= [new Todo("A", false)]
 
         //act
         main.createNewTodo(listText, list);
@@ -87,7 +87,6 @@ describe('should test all parts of createHTML function', () => {
     test("should add class if done", () => {
         document.body.innerHTML = `<ul id="todos" class="todo"></ul>`
         const todoList :Todo [] = [new Todo("handla", true)]
-        const todoListPlacement = `<li class="todo__text">handla</li>`
 
         //act
         main.createHtml(todoList)
@@ -108,8 +107,26 @@ describe('should test all parts of createHTML function', () => {
         
         //act
         document.querySelector("li")?.click();
+
         //assert
         expect(spyOnToggleTodo).toHaveBeenCalled();
+        spyOnToggleTodo.mockRestore();
+    })
+
+    test('should test if sortlistbyfirstletter has been called', () => {
+        document.body.innerHTML = 
+        `<ul id="todos" class="todo">
+            <li class="todo"></li>
+        </ul>`
+        const spyOnSortByFirstLetter = jest.spyOn(functions, "sortByFirstLetter")
+        
+        
+        //act
+        main.createHtml([new Todo("handla", true)])
+
+        //assert
+        expect(spyOnSortByFirstLetter).toHaveBeenCalled();
+        spyOnSortByFirstLetter.mockRestore();
     })
 })
 /******************************************************************************
@@ -153,27 +170,27 @@ describe ('should add or remove class from div error', () => {
 
     test('should add class if true', () => {
         //arrange 
-        let text = "error";
+        const text = "Det blev fel";
         document.body.innerHTML = `<div id="error" class="error"></div>`;
         
         //act
         main.displayError(text, true)
 
         //assert
-        let result = document.getElementById('error') as HTMLDivElement;
-        expect(result.classList.contains("show")).toBe(true);
+        const displayErrorPlacement = document.getElementById("error") as HTMLDivElement;
+        expect(displayErrorPlacement.classList.contains("show")).toBe(true);
     })
     test('should remove class if false', () => {
         //arrange 
-        let text = "error";
+        const text = "Det blev fel";
         document.body.innerHTML = `<div id="error" class="error"></div>`;
         
         //act
         main.displayError(text, false)
 
         //assert
-        let result = document.getElementById('error') as HTMLDivElement;
-        expect(result.classList.contains("show")).toBe(false);
+        const displayErrorPlacement = document.getElementById("error") as HTMLDivElement;
+        expect(displayErrorPlacement.classList.contains("show")).toBe(false);
     })
 })
 
@@ -185,9 +202,11 @@ describe("test clearToDos-function", () => {
     test('should call createHTML', () => {
         //arrange
         document.body.innerHTML = `<ul id="todos" class="todo"></ul>`
-        let spyOnCreateHtml = jest.spyOn(main, "createHtml").mockReturnValue();
+        const spyOnCreateHtml = jest.spyOn(main, "createHtml").mockReturnValue();
+        
         //act
         main.clearTodos ([])
+        
         //assert
         expect(spyOnCreateHtml).toHaveBeenCalled();
         spyOnCreateHtml.mockRestore();
@@ -196,9 +215,11 @@ describe("test clearToDos-function", () => {
     test ('should call removeAllTodos', () => {
         //arrange
         document.body.innerHTML = `<ul id="todos" class="todo"></ul>`
-        let spyOnRemoveAllTodos = jest.spyOn(functions, "removeAllTodos").mockReturnValue();
+        const spyOnRemoveAllTodos = jest.spyOn(functions, "removeAllTodos").mockReturnValue();
+        
         //act
         main.clearTodos ([])
+        
         //assert
         expect(spyOnRemoveAllTodos).toHaveBeenCalled()
         spyOnRemoveAllTodos.mockRestore();
